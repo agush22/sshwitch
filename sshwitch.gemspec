@@ -12,5 +12,6 @@ Gem::Specification.new do |s|
   s.email       = 'agush@roca9.com'
   s.files       = ["bin/sshwitch"]
   s.executables = ["sshwitch"]
+  s.license     = 'MIT'
   s.homepage    = 'http://rubygems.org/gems/sshwitch'
 end
