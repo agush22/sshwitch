@@ -151,6 +151,8 @@ if options.empty? && ARGV.count > 0
   else
     switch(name)
   end
+elsif options[:current]
+  puts get_current
 elsif options[:list]
   puts list
 elsif options[:new]
