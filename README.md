@@ -4,6 +4,11 @@ SSHwitch
 SSHwitch is a small ruby gem that lets you manage different sets of keys in Unix-like systems.
 The purpose of this is to enable using diferent sets of keys for services such as Github, Heroku, Bitbucket, or any other that requires SSH auth.
 
+Install
+-------
+
+    gem install sshwitch
+
 Usage
 -----
 
