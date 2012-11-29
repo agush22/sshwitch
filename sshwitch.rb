@@ -139,8 +139,11 @@ option_parser = OptionParser.new do |opts|
   end
 end.parse!
 
-#If no options use default behavior switch()
-if options.empty? && ARGV.count > 0
+#If no options and no name param print current key
+if options.empty? && ARGV.empty?
+  puts get_current
+#If no options and name param use default behavior switch()
+elsif options.empty? && ARGV.count > 0
   name = ARGV.shift
   if get_current.nil?
     puts "WARNING! This will overwrite the key pair in #{SSH_PATH}, press Y to confirm"
@@ -152,6 +155,7 @@ if options.empty? && ARGV.count > 0
   else
     switch(name)
   end
+#If other options...
 elsif options[:current]
   puts get_current
 elsif options[:list]
