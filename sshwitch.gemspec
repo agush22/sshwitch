@@ -1,7 +1,10 @@
 # encoding: UTF-8
+require File.expand_path('../lib/sshwitch_version', __FILE__)
+
+version = Sshwitch::VERSION
 Gem::Specification.new do |s|
   s.name        = 'sshwitch'
-  s.version     = '0.0.1'
+  s.version     = version
   s.date        = '2012-10-29'
   s.summary     = "Manage your ssh keys"
   s.description = "Manage different sets of keys in your home folder"
