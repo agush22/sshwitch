@@ -8,80 +8,6 @@ HOME_PATH = File.expand_path('~')+'/'
 SSH_PATH = HOME_PATH + '.ssh/'
 SWITCH_FILE = SSH_PATH+'.sshwitch'
 
-options = {}
-
-option_parser = OptionParser.new do |opts|
-  exec_name = File.split($0)[1]
-  opts.banner = "Switch and manage key pairs in #{SSH_PATH} \n\n"
-  opts.banner += "Default usage: #{exec_name} key_pair_name \n\n"
-  opts.banner += "Advanced usage: #{exec_name} [option]\n"
-
-  opts.on("-c", "--current", "Get name of current key pair") do
-    options[:current] = true
-  end
-
-  opts.on("-n NEW", "--new", "New key pair name") do |new|
-    options[:new] = new
-  end
-
-  opts.on("-b BACKUP", "--backup", "Backup key pair in #{SSH_PATH}") do |backup|
-    options[:backup] = backup
-  end
-
-  opts.on("-r OLDNAME,NEWNAME", "--rename", Array, "Rename a key pair") do |rename_names|
-    if rename_names.count == 2
-      puts "Rename #{rename_names[0]} to #{rename_names[1]}"
-      options[:oldname] = rename_names[0]
-      options[:newname] = rename_names[1]
-    else
-      puts "Wrong number of arguments for Rename (#{rename_names.count} for 2)"
-    end
-  end
-
-  opts.on("-l", "--list", "Get list of key pairs in #{SSH_PATH} \n\n") do
-    options[:list] = true
-  end
-
-  opts.on("-d DELETE", "--delete", "Delete key pair \n\n") do |delete|
-    options[:delete] = delete
-  end
-end.parse!
-
-#If no options and no name param print current key
-if options.empty? && ARGV.empty?
-  puts get_current
-#If no options and name param use default behavior switch()
-elsif options.empty? && ARGV.count > 0
-  name = ARGV.shift
-  if get_current.nil?
-    puts "WARNING! This will overwrite the key pair in #{SSH_PATH}, press Y to confirm"
-    if (gets.chr.upcase == 'Y')
-      switch(name)
-    end
-  elsif get_current == name
-    puts "#{name} is the current key pair"
-  else
-    switch(name)
-  end
-#If other options...
-elsif options[:current]
-  puts get_current
-elsif options[:list]
-  puts list
-elsif options[:new]
-  new(options[:new])
-elsif options[:backup]
-  backup(options[:backup])
-elsif options[:delete]
-  puts "WARNING! This will delete the directory and all files in #{SSH_PATH+options[:delete]}, press Y to confirm"
-  if (gets.chr.upcase == 'Y')
-    delete(options[:delete])
-  end
-elsif options[:oldname] && options[:newname]
-  rename(options[:oldname], options[:newname])
-end
-
-# Methods:
 def get_current
   begin
     File.open(SWITCH_FILE).first
@@ -172,4 +98,77 @@ def delete(name)
   rescue => e
     puts e.message
   end
+end
+
+options = {}
+
+option_parser = OptionParser.new do |opts|
+  exec_name = File.split($0)[1]
+  opts.banner = "Switch and manage key pairs in #{SSH_PATH} \n\n"
+  opts.banner += "Default usage: #{exec_name} key_pair_name \n\n"
+  opts.banner += "Advanced usage: #{exec_name} [option]\n"
+
+  opts.on("-c", "--current", "Get name of current key pair") do
+    options[:current] = true
+  end
+
+  opts.on("-n NEW", "--new", "New key pair name") do |new|
+    options[:new] = new
+  end
+
+  opts.on("-b BACKUP", "--backup", "Backup key pair in #{SSH_PATH}") do |backup|
+    options[:backup] = backup
+  end
+
+  opts.on("-r OLDNAME,NEWNAME", "--rename", Array, "Rename a key pair") do |rename_names|
+    if rename_names.count == 2
+      puts "Rename #{rename_names[0]} to #{rename_names[1]}"
+      options[:oldname] = rename_names[0]
+      options[:newname] = rename_names[1]
+    else
+      puts "Wrong number of arguments for Rename (#{rename_names.count} for 2)"
+    end
+  end
+
+  opts.on("-l", "--list", "Get list of key pairs in #{SSH_PATH} \n\n") do
+    options[:list] = true
+  end
+
+  opts.on("-d DELETE", "--delete", "Delete key pair \n\n") do |delete|
+    options[:delete] = delete
+  end
+end.parse!
+
+#If no options and no name param print current key
+if options.empty? && ARGV.empty?
+  puts get_current
+#If no options and name param use default behavior switch()
+elsif options.empty? && ARGV.count > 0
+  name = ARGV.shift
+  if get_current.nil?
+    puts "WARNING! This will overwrite the key pair in #{SSH_PATH}, press Y to confirm"
+    if (gets.chr.upcase == 'Y')
+      switch(name)
+    end
+  elsif get_current == name
+    puts "#{name} is the current key pair"
+  else
+    switch(name)
+  end
+#If other options...
+elsif options[:current]
+  puts get_current
+elsif options[:list]
+  puts list
+elsif options[:new]
+  new(options[:new])
+elsif options[:backup]
+  backup(options[:backup])
+elsif options[:delete]
+  puts "WARNING! This will delete the directory and all files in #{SSH_PATH+options[:delete]}, press Y to confirm"
+  if (gets.chr.upcase == 'Y')
+    delete(options[:delete])
+  end
+elsif options[:oldname] && options[:newname]
+  rename(options[:oldname], options[:newname])
 end
