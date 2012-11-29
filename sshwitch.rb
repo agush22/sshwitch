@@ -50,6 +50,7 @@ def new(name)
     begin
       mkdir SSH_PATH+name
       `ssh-keygen -t rsa -f #{SSH_PATH+name}/id_rsa`
+      rmdir SSH_PATH+name
     rescue => e
       puts "Could not create key pair, check if you have permission to write on #{SSH_PATH+name}"
       puts e.message
