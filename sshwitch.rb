@@ -90,6 +90,13 @@ def rename(oldname, newname)
   end
 end
 
+def delete(name)
+  begin
+    Dir.glob(File.join(SSH_PATH+name, "*")).each {|file| rm file, :verbose => true}
+    rmdir SSH_PATH+name, :verbose => true
+  rescue => e
+    puts e.message
+  end
 end
 
 options = {}
@@ -126,6 +133,9 @@ option_parser = OptionParser.new do |opts|
     options[:list] = true
   end
 
+  opts.on("-d DELETE", "--delete", "Delete key pair \n\n") do |delete|
+    options[:delete] = delete
+  end
 end.parse!
 
 #If no options use default behavior switch()
@@ -147,6 +157,11 @@ elsif options[:new]
   new(options[:new])
 elsif options[:backup]
   backup(options[:backup])
+elsif options[:delete]
+  puts "WARNING! This will delete the directory and all files in #{SSH_PATH+options[:delete]}, press Y to confirm"
+  if (gets.chr.upcase == 'Y')
+    delete(options[:delete])
+  end
 elsif options[:oldname] && options[:newname]
   rename(options[:oldname], options[:newname])
 end
