@@ -73,6 +73,23 @@ def backup(name)
   end
 end
 
+def rename(oldname, newname)
+  if File.directory? SSH_PATH+newname
+    puts "#{SSH_PATH+newname} already exists, cannot rename"
+  else
+    begin
+      mv SSH_PATH+oldname, SSH_PATH+newname, :verbose => true
+      if get_current == oldname
+        File.open(SWITCH_FILE, 'w') {|f| f.write(newname) }
+        puts "Renamed the current key"
+      end
+    rescue => e
+      puts e.message
+      puts "Could not rename"
+    end
+  end
+end
+
 end
 
 options = {}
@@ -97,7 +114,7 @@ option_parser = OptionParser.new do |opts|
 
   opts.on("-r OLDNAME,NEWNAME", "--rename", Array, "Rename a key pair") do |rename_names|
     if rename_names.count == 2
-      puts "replace #{rename_names[0]} with #{rename_names[1]}"
+      puts "Rename #{rename_names[0]} to #{rename_names[1]}"
       options[:oldname] = rename_names[0]
       options[:newname] = rename_names[1]
     else
@@ -130,4 +147,6 @@ elsif options[:new]
   new(options[:new])
 elsif options[:backup]
   backup(options[:backup])
+elsif options[:oldname] && options[:newname]
+  rename(options[:oldname], options[:newname])
 end
