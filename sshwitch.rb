@@ -17,6 +17,12 @@ def get_current
   end
 end
 
+def list
+  begin
+    Dir[SSH_PATH+'*/'].map { |a| File.basename(a) }
+  end
+end
+
 def switch(name)
   if File.readable?(SSH_PATH+name+"/id_rsa") && File.readable?(SSH_PATH+name+"/id_rsa.pub")
     begin
@@ -70,6 +76,10 @@ option_parser = OptionParser.new do |opts|
     end
   end
 
+  opts.on("-l", "--list", "Get list of key pairs in #{SSH_PATH} \n\n") do
+    options[:list] = true
+  end
+
 end.parse!
 
 #If no options use default behavior switch()
@@ -85,6 +95,6 @@ if options.empty? && ARGV.count > 0
   else
     switch(name)
   end
+elsif options[:list]
+  puts list
 end
-
-#puts options.inspect
