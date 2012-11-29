@@ -43,6 +43,19 @@ def switch(name)
 end
 
 def new(name)
+  if File.directory? SSH_PATH+name
+    puts "#{SSH_PATH+name} already exists, skipping"
+  else
+    puts "Creating key pair in #{SSH_PATH+name}"
+    begin
+      mkdir SSH_PATH+name
+      `ssh-keygen -t rsa -f #{SSH_PATH+name}/id_rsa`
+    rescue => e
+      puts "Could not create key pair, check if you have permission to write on #{SSH_PATH+name}"
+      puts e.message
+    end
+  end
+end
 
 end
 
@@ -97,4 +110,6 @@ if options.empty? && ARGV.count > 0
   end
 elsif options[:list]
   puts list
+elsif options[:new]
+  new(options[:new])
 end
