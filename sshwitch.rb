@@ -57,6 +57,22 @@ def new(name)
   end
 end
 
+def backup(name)
+  if File.directory? SSH_PATH+name
+    puts "#{SSH_PATH+name} already exists, skipping"
+  else
+   puts "Copying current key pair in #{SSH_PATH} to #{SSH_PATH+name}"
+   begin
+     mkdir SSH_PATH+name
+     cp(SSH_PATH+"/id_rsa", SSH_PATH+name+"id_rsa", :verbose => true)
+     cp(SSH_PATH+"/id_rsa.pub", SSH_PATH+name+"id_rsa.pub", :verbose => true)
+    rescue => e
+      puts "Could not backup key pair, check if you have permission to write on #{SSH_PATH+name}"
+      puts e.message
+   end
+  end
+end
+
 end
 
 options = {}
@@ -112,4 +128,6 @@ elsif options[:list]
   puts list
 elsif options[:new]
   new(options[:new])
+elsif options[:backup]
+  backup(options[:backup])
 end
