@@ -5,10 +5,10 @@ SSHwitch is a small ruby gem that lets you manage different sets of keys in Unix
 The purpose of this is to enable using diferent sets of keys for services such as Github, Heroku, Bitbucket, or any other that requires SSH auth.
 
 Usage
-=====
+-----
 
-Backup
-------
+### Backup
+
 
 Supposing you already have a "work" key pair in your home dir.
 First do a backup of it:
@@ -17,8 +17,8 @@ First do a backup of it:
 
 This will create a copy of the current key pair (the one in ~/.ssh/) in a new dir:  ~/.ssh/work
 
-New
----
+### New
+
 
 To create a new RSA key pair (you need to have ssh-keygen installed) run:
 
@@ -26,8 +26,8 @@ To create a new RSA key pair (you need to have ssh-keygen installed) run:
 
 This will create a new key pair in ~/.ssh/personal
 
-Switch
-------
+### Switch
+
 
 Make personal the current key pair:
 
@@ -37,8 +37,7 @@ Change back to work key pair
 
     sshwitch work
 
-Rename
-------
+### Rename
 
 Change the work key pair to job (both params together separated by comma):
 
@@ -46,15 +45,13 @@ Change the work key pair to job (both params together separated by comma):
 
 This will move (rename) the folder ~/.ssh/work to ~/.ssh/job
 
-List
-----
+### List
 
 List the name of available key pairs
 
     sshwitch -l
 
-Current
--------
+### Current
 
 Display the name of the active key pair
 
@@ -63,8 +60,7 @@ or
 
     sshwitch
 
-Delete
-------
+### Delete
 
 Delete the key pair in ~/.ssh/job
 
@@ -74,9 +70,6 @@ If that key was currently active, it will stay that way until you switch it out 
 
 
 To Do
-=====
+-----
 
 Tests :(
-
-
-
