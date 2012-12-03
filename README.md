@@ -77,4 +77,6 @@ If that key was currently active, it will stay that way until you switch it out 
 To Do
 -----
 
-Tests :(
+* Tests :(
+* Use Ruby to generate new SSH keys, and get rid of ssh-keygen
+dependency
